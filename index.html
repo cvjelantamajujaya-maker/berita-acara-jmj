@@ -234,9 +234,73 @@ input.field-auto { background: var(--lcream); border-radius: 4px 4px 0 0; }
   .noba-wrap input { width: 100%; text-align: left; }
   .g2, .g3, .ttd-grid { grid-template-columns: 1fr !important; }
 }
+
+/* ── PASSWORD GATE ── */
+.pw-gate {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #EDE3D5;
+  display: flex; align-items: center; justify-content: center;
+}
+.pw-box {
+  background: #fff; border-radius: 12px;
+  padding: 36px 32px; width: 320px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.15);
+  text-align: center;
+}
+.pw-logo { height: 72px; margin-bottom: 14px; }
+.pw-title { font-size: 16px; font-weight: 800; color: var(--brown); margin-bottom: 4px; }
+.pw-sub   { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+.pw-input {
+  width: 100%; border: 1.5px solid var(--mgray); border-radius: 8px;
+  padding: 11px 14px; font-size: 15px; font-family: var(--font);
+  color: var(--dgray); outline: none; text-align: center;
+  letter-spacing: 4px; margin-bottom: 12px;
+  transition: border-color .2s;
+}
+.pw-input:focus { border-color: var(--brown); }
+.pw-btn {
+  width: 100%; padding: 12px; background: var(--brown); color: #fff;
+  border: none; border-radius: 8px; font-size: 14px; font-weight: 700;
+  cursor: pointer; font-family: var(--font);
+}
+.pw-btn:active { opacity: .85; }
+.pw-err { font-size: 12px; color: var(--red); margin-top: 8px; min-height: 18px; }
 </style>
 </head>
 <body>
+
+<!-- PASSWORD GATE -->
+<div class="pw-gate" id="pw-gate">
+  <div class="pw-box">
+    <img class="pw-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" id="pw-logo-img" alt="Logo JMJ">
+    <div class="pw-title">CV JELANTA MAJU JAYA</div>
+    <div class="pw-sub">Berita Acara Pembelian UCO</div>
+    <input type="password" class="pw-input" id="pw-input" placeholder="••••••"
+      onkeydown="if(event.key==='Enter') cekPassword()">
+    <button class="pw-btn" onclick="cekPassword()">Masuk</button>
+    <div class="pw-err" id="pw-err"></div>
+  </div>
+</div>
+
+<script>
+// Pasang logo di password gate
+window.addEventListener('DOMContentLoaded', () => {
+  const mainLogo = document.querySelector('img.logo');
+  if (mainLogo) document.getElementById('pw-logo-img').src = mainLogo.src;
+});
+function cekPassword() {
+  const val = document.getElementById('pw-input').value;
+  if (val === '112233') {
+    document.getElementById('pw-gate').style.display = 'none';
+  } else {
+    const err = document.getElementById('pw-err');
+    err.textContent = 'Password salah, coba lagi.';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+    setTimeout(() => err.textContent = '', 2500);
+  }
+}
+</script>
 
 <div class="toolbar">
   <button class="btn btn-reset" onclick="resetForm()">🔄&nbsp; Reset Form</button>
